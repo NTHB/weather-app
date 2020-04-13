@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 
 export default class current extends Component {
+    constructor(props){
+        super(props);
+        console.log(this.props)
+    }
     render(props) {
-        const {currentWeather} = props.currentWeather;
+        const {city, country, temperature, description} = this.props.currentWeather;
         return (
             <div>
-                hello from current
-                <h2>{currentWeather.city}</h2>
-                <div>{currentWeather.temperature}&deg;C</div>
-                <div>{currentWeather.description}</div>
+                <h2>{city}, {country} </h2>
+                <div>{temperature}&deg;C</div>
+                <div>{description}</div>
             </div>
         )
     }

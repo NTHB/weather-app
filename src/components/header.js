@@ -3,9 +3,7 @@ import React, { Component } from 'react'
 export default class header extends Component {
     render() {
         return (
-            <div>
-                Hello from HEADER
-            </div>
+            <h1>Weather App</h1>
         )
     }
 }
