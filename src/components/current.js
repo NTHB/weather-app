@@ -10,8 +10,10 @@ export default class current extends Component {
         return (
             <div>
                 <h2>{city}, {country} </h2>
+                <div>Today</div>
                 <div>{temperature}&deg;C</div>
                 <div>{description}</div>
+                <br />
             </div>
         )
     }

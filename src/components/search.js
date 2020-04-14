@@ -14,10 +14,13 @@ export default class search extends Component {
         let cityName = e.target.value;
         console.log(cityName)
         clearTimeout(this.typingTimer);
-        this.typingTimer =  setTimeout(() => {
-            console.log(`Delay Called >> ${cityName}`)
-            this.props.onSearchChange(cityName);
-        }, 1500);
+        if(cityName !== null && cityName !== ''){
+            this.typingTimer =  setTimeout(() => {
+                console.log(`Delay Called >> ${cityName}`)
+                this.props.onSearchChange(cityName);
+            }, 1250);
+        }
+        
        
     }
 
