@@ -27,7 +27,7 @@ export default class search extends Component {
     render() {
         return (
             <div>
-                <form action="" autoComplete="off">
+                <form action="" autoComplete="on">
                     <div>
                         <label htmlFor="city-input"><FaSearch></FaSearch></label>
                         <input type="text" 

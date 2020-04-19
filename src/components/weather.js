@@ -12,11 +12,12 @@ export default class weather extends Component {
         this.state = {
             city: 'vancouver',
             currentWeather: {},
-            forecastWeather: [],
+            forecastWeather: {forecastList: [],timezone: 0},
             error: '',
             isLoaded: false
         };
         this.getWeather = this.getWeather.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
         this.handleResponse = this.handleResponse.bind(this);
     }
 
@@ -57,12 +58,17 @@ export default class weather extends Component {
             if (Object.entries(forecastResult).length) {
                 console.log(`forecastResult ${forecastResult}`)
                 const forecast = [];
-                for (let i = 0; i < forecastResult.list.length; i += 8) {
-                    forecast.push(this.dataHandler(forecastResult.list[i + 4]));
+                let timeZoneOffset = forecastResult.city.timezone;
+                console.log(`timeZoneOffset ${timeZoneOffset}`)
+                for(let i = 0; i < forecastResult.list.length; i++){
+                    forecast.push(this.forecastDataHandler(forecastResult.list[i],timeZoneOffset));
                 }
                 console.log(forecast);
                 this.setState({
-                    forecastWeather: forecast,
+                    forecastWeather: {
+                        forecastList: forecast,
+                        timezone: timeZoneOffset
+                    },
                     error: ''
                 });
             }
@@ -84,26 +90,35 @@ export default class weather extends Component {
             country: data.sys.country,
             condition: data.cod,
             icon_id: data.weather[0].id,
+            weather_icon: data.weather[0].icon,
             description: data.weather[0].description, 
             temperature: data.main.temp,
+            feels_like: data.main.feels_like,
             humidity: data.main.humidity,
-            wind_speed: Math.round(data.wind.speed * 3.6)
-        }
-
-        if (data.dt_txt) {
-            dataMapping.dt_txt = data.dt_txt;
+            wind_speed: Math.round(data.wind.speed * 3.6),
+            wind_deg: data.wind.deg,
+            sunrise: data.sys.sunrise*1000,
+            sunset: data.sys.sunset*1000
         }
     
         if (data.weather[0].icon) {
             dataMapping.icon = data.weather[0].icon;
         }
-    
-        if (data.main.temp_min && data.main.temp_max) {
-            dataMapping.max = data.main.temp_max;
-            dataMapping.min = data.main.temp_min;
-        }
 
         return dataMapping;
+    }
+
+    forecastDataHandler = (data, timeZoneOffset) => {
+        const dataMapping ={
+            date: (data.dt+timeZoneOffset)*1000,
+            temperature: data.main.temp,
+            condition: data.weather[0].description,
+            weather_id: data.weather[0].id,
+            weather_icon: data.weather[0].icon,
+            dateNum: new Date((data.dt+timeZoneOffset)*1000).getDate()
+        }
+
+        return dataMapping
     }
 
     handleResponse(response) {
@@ -113,6 +128,11 @@ export default class weather extends Component {
         } else {
             throw new Error("Error: Location " + response.statusText);
         }
+    }
+
+    onSearchChange(cityName){
+        this.getWeather(cityName);
+        this.getForecast(cityName);
     }
 
     componentDidMount(){
@@ -135,7 +155,7 @@ export default class weather extends Component {
         } else {
             return (
                 <div>
-                    <SearchBar onSearchChange={this.getWeather}></SearchBar>
+                    <SearchBar onSearchChange={this.onSearchChange}></SearchBar>
                     <CurrentWeather currentWeather={currentWeather}></CurrentWeather>
                     <ForecastWeather forecastWeather={forecastWeather}></ForecastWeather>
                 </div>
