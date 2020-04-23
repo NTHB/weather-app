@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import { FaSearch } from 'react-icons/fa'
+import { FaSearch } from 'react-icons/fa';
+
+import '../styles/search.scss';
 
 export default class search extends Component {
     constructor(props){
@@ -26,15 +28,17 @@ export default class search extends Component {
 
     render() {
         return (
-            <div>
-                <form action="" autoComplete="on">
+            <div className="search">
+                <form action="" autoComplete="on" className="search__form">
                     <div>
-                        <label htmlFor="city-input"><FaSearch></FaSearch></label>
+                        <label htmlFor="city-input" className="search__form-label"><FaSearch className="search__form-label-icon"></FaSearch></label>
                         <input type="text" 
                         name="city-input" 
                         id="search-input" 
                         placeholder="City Name"
-                        onChange={this.handleChange}/>
+                        onChange={this.handleChange}
+                        className="search__form-input"
+                        />
                     </div>
                 </form>
             </div>

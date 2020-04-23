@@ -1,0 +1,51 @@
+@import 'variables.scss';
+.current{
+    padding: 1rem;
+    color: $primary-color;
+    max-width: 60%;
+    margin: 0 auto;
+
+    &__title{
+        font-size: 2rem;
+        // text-align: left;
+        margin-top: .8rem;
+        margin-bottom: 0rem;
+    }
+
+    &__wrapper{
+        display: flex;
+        flex-wrap: wrap;
+
+        &__icon{
+            padding-top: 2rem;
+            font-size: 10rem;
+            flex-grow: 2;
+        }
+    
+        &__detail{
+            flex-grow: 3;
+
+            &-temp{
+                font-size: 5rem;
+                &-unit{
+                    font-size: 1rem;
+                }
+            }
+            &-desc{
+                font-size: 1rem
+            }
+
+            &-label{
+                font-weight: bold;
+                font-size: .8rem;
+                color: $primary-color;
+            }
+
+            &-data{
+                font-size: .8rem;
+                color: $secondary-color;
+            }
+        }
+    }
+   
+}

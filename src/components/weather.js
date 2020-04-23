@@ -4,6 +4,8 @@ import SearchBar from './search.js';
 import CurrentWeather from './current.js';
 import ForecastWeather from './forecast.js';
 
+import '../styles/error.scss';
+
 
 export default class weather extends Component {
 
@@ -90,15 +92,17 @@ export default class weather extends Component {
             country: data.sys.country,
             condition: data.cod,
             icon_id: data.weather[0].id,
+            main: data.weather[0].main,
             weather_icon: data.weather[0].icon,
             description: data.weather[0].description, 
-            temperature: data.main.temp,
-            feels_like: data.main.feels_like,
+            temperature: Math.floor(data.main.temp),
+            feels_like: Math.floor(data.main.feels_like),
             humidity: data.main.humidity,
             wind_speed: Math.round(data.wind.speed * 3.6),
             wind_deg: data.wind.deg,
             sunrise: data.sys.sunrise*1000,
-            sunset: data.sys.sunset*1000
+            sunset: data.sys.sunset*1000,
+            timezone: data.timezone
         }
     
         if (data.weather[0].icon) {
@@ -111,8 +115,9 @@ export default class weather extends Component {
     forecastDataHandler = (data, timeZoneOffset) => {
         const dataMapping ={
             date: (data.dt+timeZoneOffset)*1000,
-            temperature: data.main.temp,
+            temperature: Math.floor(data.main.temp),
             condition: data.weather[0].description,
+            main:data.weather[0].main,
             weather_id: data.weather[0].id,
             weather_icon: data.weather[0].icon,
             dateNum: new Date((data.dt+timeZoneOffset)*1000).getDate()
@@ -147,8 +152,8 @@ export default class weather extends Component {
         } else if(error){
             return (
                 <div>
-                    {error}
                     <SearchBar onSearchChange={this.getWeather}></SearchBar>
+                    <div className="error">{error}</div>
                 </div>
             )
                 

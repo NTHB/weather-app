@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 
+import { WiDaySunny, WiCloudy, WiRain, WiDayThunderstorm, WiWindy, WiDayShowers } from 'react-icons/wi';
+import { IoIosSnow } from 'react-icons/io';
+
+import '../styles/forecast.scss';
+
 export default class forecast extends Component {
     constructor(props){
         super(props)
@@ -10,10 +15,10 @@ export default class forecast extends Component {
     DateConvertor(time){
         let convertedDate ="";
         var dateOfWeek = new Date(time).getDay();
-        let dateArray = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturnday"];
+        let dateArray = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
         var date = new Date(time).getDate();
         var month =  (new Date(time).getMonth())+1;
-        convertedDate = dateArray[dateOfWeek] + date + "/" + month;
+        convertedDate = dateArray[dateOfWeek] + " " + date + "/" + month;
 
         return convertedDate;
     }
@@ -50,7 +55,7 @@ export default class forecast extends Component {
                 // console.log(eachHour)
                 max.push(eachHour.temperature);
                 min.push(eachHour.temperature);
-                weather_icon.push(eachHour.weather_icon);
+                weather_icon.push(eachHour.main);
                 dateDT.push(eachHour.date);
             }
             const forecastObject = {
@@ -68,60 +73,43 @@ export default class forecast extends Component {
         return forecastArray
     }
 
+    WeatherIcon(main){
+        if (main === 'Thunderstorm') {
+            return <WiDayThunderstorm />;
+        } else if (main === 'Drizzle') {
+            return <WiDayShowers />;
+        } else if (main === 'Rain') {
+            return <WiRain />;
+        } else if (main === 'Snow') {
+            return <IoIosSnow />;
+        } else if (main === 'Clear') {
+            return <WiDaySunny style={{color: "#fcbf1e"}}/>;
+        } else if (main === 'Clouds') {
+            return <WiCloudy />;
+        } else {
+            return <WiWindy />;
+        }
+    }
+
 
     render() {
         const forecastList = this.DataHandler(this.props.forecastWeather.forecastList.filter((forecast) =>
-                forecast.dateNum !== new Date().getDate()
+                new Date(forecast.date).getMonth > new Date().getMonth || forecast.dateNum > new Date().getDate()
             )).map((forecast, index) => (
-                <div key={index}>
-                    <div>{this.DateConvertor(forecast.dateDT)}</div>
-                    <img src={`http://openweathermap.org/img/wn/${forecast.weather_icon}@2x.png`} alt={forecast.weather_icon}></img>
-                    {/* <div>{forecast.weather_icon}</div> */}
-                    <div>High{forecast.max}&deg;C</div>
-                    <div>Low{forecast.min}&deg;C</div>
-                    <br />
+                <div key={index} className="forecast__date">
+                    <div className="forecast__date-name">{this.DateConvertor(forecast.dateDT)}</div>
+                    <div className="forecast__date-icon">{this.WeatherIcon(forecast.weather_icon)}</div>
+                    <div className="forecast__date-temp">
+                        <div>H:<span className="forecast__date-temp-max">{forecast.max}</span>&deg;C / L:<span className="forecast__date-temp-min">{forecast.min}</span>&deg;C</div>
+                    </div>
                 </div>
             ));
 
         
             return (
-                <div>{forecastList}</div>
+                <div className="forecast">{forecastList}</div>
             )
     }
         
 }
-
-//     render() {
-//         // const forecastList = DataMapping(this.props.forecastWeather)
-//         const forecastList = this.props.forecastWeather.forecastList.map((forecast, index) => (
-//             <div key={index}>
-//                 <div>{this.DateConvertor(forecast.date)}</div>
-//                 <div>{forecast.temperature}&deg;C</div>
-//                 <div>{forecast.description}</div>
-//                 <div>High&deg;C</div>
-//                 <div>Low&deg;C</div>
-//                 <br />
-//             </div>
-//         ));
-
-//         return (
-//             <div>{forecastList}</div>
-//         );
-//     }
-// }
-
-
-// date: (data.dt+timeZoneOffset)*1000,
-//             temperature: 11.36,
-//             condition: "broken clouds",
-//             weather_id: 803,
-//             weather_icon: "04d",
-//             dateNum: 17
-
-// forecast{
-//     date: <<dateNum,
-//     min: <<temp,
-//     max: <<temp,
-//     icon: <<weather_icon
-// }
 

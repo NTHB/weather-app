@@ -1,0 +1,26 @@
+$color-black: #000;
+.search{
+    width: 100%;
+    margin-bottom: .8rem;
+    &__form {
+        font-size: 1rem;
+        &-label{
+            
+            padding-right: .2rem;
+
+            color: #1f5f8b;
+            &-icon{
+                padding-top: .2rem;
+                box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+            }
+        }
+        &-input{
+            font-size: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            border-radius: .5rem;
+            border:solid .5px rgba(214, 213, 213, 0.5);
+            padding: .5rem;
+            width: 40%;
+        }
+    }
+}
