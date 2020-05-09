@@ -27,7 +27,7 @@ export default class weather extends Component {
     getWeather(cityName){
         console.log(`getWeather called ${cityName}`);
         fetch(
-            `http://api.openweathermap.org/data/2.5/weather/?q=${cityName}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather/?q=${cityName}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
         ).then(respond => this.handleResponse(respond))
         .then(weather => {
             if(Object.entries(weather).length) {
@@ -54,7 +54,7 @@ export default class weather extends Component {
     getForecast(cityName) {
         console.log(`getForecast called ${cityName}`);
         fetch(
-          `http://api.openweathermap.org/data/2.5/forecast/?q=${cityName}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
+          `https://api.openweathermap.org/data/2.5/forecast/?q=${cityName}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
         ).then(respond => this.handleResponse(respond))
         .then(forecastResult => {
             if (Object.entries(forecastResult).length) {
